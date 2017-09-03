@@ -1,0 +1,178 @@
+---
+title: "Untitled"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+# Created a local Instance of the Data set Provided by saving it as a CVS file.
+# Importing Data from local machine into R Object using read.cvs command.
+
+# creating local variable/Schema for R "Mushroom_Data"
+
+Mushroom_Data <- read.csv(file.choose(),header = F)
+
+# Above code will load cvs file data into the schema we created. file.choose() command will allow us to chose cvs file saved on our machine, header = F means that dataset does not include any header rows.
+
+# Accessing Data
+
+   V1 V2 V3 V4 V5 V6 V7 V8 V9 V10
+1  p  x  s  n  t  p  f  c  n   k
+2  e  x  s  y  t  a  f  c  b   k
+3  e  b  s  w  t  l  f  c  b   n
+4  p  x  y  w  t  p  f  c  n   n
+5  e  x  s  g  f  n  f  w  b   k
+6  e  x  y  y  t  a  f  c  b   n
+
+# Above code will access only first 6 rows from the dataset.
+
+# ______________Accessing Total row count with number of total columns labeled as variables____________________.
+
+dim(Mushroom_Data)
+[1] 8124   10
+
+
+#_______________Accessing the summary of the schema with R interanl analysis and grouping of data_______________
+
+summary(Mushroom_Data)
+ V1       V2       V3             V4       V5             V6       V7       V8       V9            V10      
+ e:4208   b: 452   f:2320   n      :2284   f:4748   n      :3528   a: 210   c:6812   b:5612   b      :1728  
+ p:3916   c:   4   g:   4   g      :1840   t:3376   f      :2160   f:7914   w:1312   n:2512   p      :1492  
+          f:3152   s:2556   e      :1500            s      : 576                              w      :1202  
+          k: 828   y:3244   y      :1072            y      : 576                              n      :1048  
+          s:  32            w      :1040            a      : 400                              g      : 752  
+          x:3656            b      : 168            l      : 400                              h      : 732  
+                            (Other): 220            (Other): 484                              (Other):1170  
+
+
+#______________Renaming the column names from Generic to more readiable_____________________.
+
+names(Mushroom_Data) <- c("Type_Indicator","cap_shape","cap_surface","cap_color","bruises","odor","gill_attachment","gill_spacing","gill_size","gill_color")
+
+#______________List of column with new column names______________________________.
+
+names(Mushroom_Data)
+ [1] "Type_Indicator"  "cap_shape"       "cap_surface"     "cap_color"       "bruises"         "odor"            "gill_attachment" "gill_spacing"   
+ [9] "gill_size"       "gill_color"     
+
+
+#______________Summay of Schema after renaming Columns________________________.
+
+summary(Mushroom_Data)
+ Type_Indicator cap_shape cap_surface   cap_color    bruises       odor      gill_attachment gill_spacing gill_size   gill_color  
+ e:4208         b: 452    f:2320      n      :2284   f:4748   n      :3528   a: 210          c:6812       b:5612    b      :1728  
+ p:3916         c:   4    g:   4      g      :1840   t:3376   f      :2160   f:7914          w:1312       n:2512    p      :1492  
+                f:3152    s:2556      e      :1500            s      : 576                                          w      :1202  
+                k: 828    y:3244      y      :1072            y      : 576                                          n      :1048  
+                s:  32                w      :1040            a      : 400                                          g      : 752  
+                x:3656                b      : 168            l      : 400                                          h      : 732  
+                                      (Other): 220            (Other): 484                                          (Other):1170  
+#____________________The summary above grouped the items in each column/variable by factor type________________.
+# for example "Type_indicator" is showing two factors, e and p where count of items with type e = 4208 and p = 3916
+
+# checking total count based on Type Indicator
+
+4208+3916
+[1] 8124
+
+dim(Mushroom_Data)
+[1] 8124   10
+
+revalue(Mushroom_Data$Type_Indicator, c("p"="poisonous", "e" = "edible"))
+
+   [1] poisonous edible    edible    poisonous edible    edible    edible    edible    poisonous edible    edible    edible    edible    poisonous
+  [15] edible    edible    edible    poisonous poisonous poisonous edible    poisonous edible    edible    edible    poisonous edible    edible   
+  [29] edible    edible    edible    poisonous edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible   
+  [43] edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous poisonous edible   
+  [57] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+  [71] edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible   
+  [85] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+  [99] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [113] edible    edible    poisonous edible    edible    edible    edible    edible    poisonous edible    poisonous edible    edible    edible   
+ [127] edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible   
+ [141] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [155] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [169] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible   
+ [183] edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [197] edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible   
+ [211] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible   
+ [225] edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible    edible    edible    edible    edible   
+ [239] edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    poisonous
+ [253] edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible   
+ [267] edible    edible    edible    poisonous edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [281] poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [295] edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [309] edible    edible    edible    poisonous edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible   
+ [323] edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible    edible    edible    edible   
+ [337] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [351] edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible   
+ [365] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [379] edible    edible    poisonous edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible   
+ [393] edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible    edible   
+ [407] edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible   
+ [421] edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [435] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [449] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [463] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [477] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [491] edible    poisonous poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [505] edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [519] edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [533] poisonous edible    poisonous edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible   
+ [547] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible   
+ [561] edible    edible    edible    edible    edible    poisonous edible    edible    poisonous edible    edible    edible    edible    edible   
+ [575] edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [589] edible    edible    poisonous edible    edible    poisonous edible    poisonous edible    edible    poisonous poisonous edible    edible   
+ [603] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible   
+ [617] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [631] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [645] edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous poisonous edible    edible    edible   
+ [659] edible    edible    edible    edible    poisonous poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [673] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [687] edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible    poisonous poisonous edible   
+ [701] poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [715] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    edible   
+ [729] edible    edible    edible    edible    poisonous poisonous edible    edible    edible    poisonous edible    edible    edible    edible   
+ [743] edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible   
+ [757] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [771] edible    edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible   
+ [785] edible    poisonous edible    edible    poisonous edible    edible    edible    edible    edible    poisonous poisonous edible    edible   
+ [799] poisonous edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [813] poisonous poisonous poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [827] edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    poisonous edible    edible   
+ [841] edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [855] edible    edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible   
+ [869] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [883] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [897] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    poisonous edible    poisonous poisonous
+ [911] edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [925] edible    edible    edible    poisonous edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible   
+ [939] edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    poisonous poisonous edible   
+ [953] edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [967] poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [981] edible    edible    edible    edible    poisonous edible    edible    edible    edible    edible    edible    edible    edible    edible   
+ [995] edible    edible    edible    edible    edible    poisonous
+ [ reached getOption("max.print") -- omitted 7124 entries ]
+Levels: edible poisonous
