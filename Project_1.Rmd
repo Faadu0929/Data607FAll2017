@@ -1,0 +1,116 @@
+---
+title: "Project 1"
+output: html_document
+---
+
+```{r}
+## Reading the file
+
+# loading the text file into the r studio
+# creating chessData vector to store the data from the text file.
+    FilePath <- "https://raw.githubusercontent.com/kaiserxc/DATA_607/master/Project%201/tournamentinfo.txt"
+    chessData <- readLines(FilePath)
+    chessData[c(1:10)]
+    
+    chessData[c(186:196)]
+    
+    library(stringr)
+    
+    # removing header columns from the file
+    chesssubsubset <- str_detect(chessData,"\\-----")
+    chessData1 <- chessData[!chesssubsubset]
+    chessData1
+      
+    chessData1 <- chessData1[3:length(chessData1)]
+    chessData1<- str_split(chessData1,"\\|")
+    
+    
+    chessData2<- str_extract_all(chessData1,"[[:alpha:]-?[:alpha:] ?]{2,}")
+    
+    # extracting player names 
+    playernames <- str_detect(unlist(chessData2),"[[:alpha:]]{3,}")
+    players<- unlist(chessData2)[playernames]
+    
+    players[c(1:6)]
+    
+    # extracting player states from the text file
+    
+    statenames <- str_detect(unlist(chessData2),"[[:alpha:]]{2}")
+    states <- unlist(chessData2)[(statenames) & (!playernames)]
+    states[c(1:6)]
+    
+    # extracting player points from the text file
+    
+    player_points <-str_extract_all(chessData1,"\\d{1,}+\\.?.?")
+    p_points <- str_detect(unlist(player_points),"\\d\\.\\d")
+    p_pts <- unlist(player_points)[p_points]
+    
+    p_pts[c(1:6)]
+    
+    
+    pre_post_data <- str_extract_all(chessData1,"((||:)|(\\>))?.?\\d{1,}P*\\.?")
+    pre_data <- str_detect(unlist(pre_post_data),"\\b\\d{3,4}P?\\b")
+    post_data <- str_detect(unlist(pre_post_data),"\\>.?\\b\\d{3,4}P?\\b")
+    
+    # extracting pre and post rating columns from the text file
+    
+    player_rating_pre <- unlist(pre_post_data)[(pre_data)&(!post_data)]
+    player_rating_pre <-str_replace_all(player_rating_pre,"P", "")
+    player_rating_pre
+    player_rating_post <- unlist(pre_post_data)[post_data]
+    player_rating_post <- str_replace_all(player_rating_post, "([>P])","")
+    
+    player_rating_pre[c(1:6)]
+    player_rating_post[c(1:6)]
+    
+    # extracting number of total games played by the each player
+    game_data<-str_extract_all(chessData1,"[WDL]...\\d{1,2}")
+    game_data<-str_extract_all(game_data,"\\.?\\d{1,2}")
+    game_data<- str_replace_all(game_data,"\\b[0]\\b",".")
+    game <- str_detect(game_data,fixed("."))
+    game_data<-game_data[!game]
+    
+    game[c(1:6)]
+ 
+    
+    
+    # Creating data frame object by getting values for columns extracted from origianl text file
+  id<- c(1:64)
+  playerName<- noquote(players)
+  State <- noquote(states)
+  pre_rating <- str_trim(player_rating_pre,"both")
+
+
+  post_rating <- str_trim(player_rating_post,"both")
+  
+  
+  
+  playerData <- cbind(id,playerName,State,p_pts,pre_rating,post_rating)
+  playerData <- as.data.frame(playerData)
+  
+  playerData$p_pts <- as.numeric(as.character((playerData$p_pts)))
+  playerData$p_pts
+  
+  
+  playerData$pre_rating <- playerData$pre_rating
+
+  playerData$post_rating <-as.numeric(as.character(playerData$post_rating))
+  playerData
+  
+  c <- array(0, dim=nrow(playerData))
+  
+  # gettign avg_rating by runnint the for loop for each player in game.
+  
+  for (i in 1: nrow(playerData)){
+    match_string<- as.numeric(as.character(str_split(unlist(str_extract_all(game[i],"\\d{1,2}"))," ")))
+  
+  c[i] <- mean(playerData[match_string,colnames(playerData)=="pre_rating"])
+  };
+  
+  playerData$pre_rating_avg <- c
+  playerData
+
+  #writing the dataframe on cvs file.
+  write.csv(playerData,row.names = FALSE)
+```
+ 
