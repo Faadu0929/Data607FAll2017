@@ -1,0 +1,22 @@
+  var books = [
+                         {
+                             "Name": "How To Draw",
+                             "Authors": "Scott Robertson and Thomas Bertlling",
+                             "Publisher": "Design Studio Press",
+                             "Pages": 272
+                         },
+
+                         {
+                             "Name": "How To Design Cars Like a Pro",
+                             "Authors": "Tony Lewin and Ryan Borroff",
+                             "Publisher": "Motorbooks",
+                             "Pages": 208
+                         },
+
+                         {
+                             "Name": "H-Point",
+                             "Authors": " Staurt Macey, Geoff Wardle and Ralph Gilles",
+                             "Publisher": "Design Studio Press",
+                             "Pages": 224
+                         }
+        ];
