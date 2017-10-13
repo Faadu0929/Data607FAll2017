@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Books>
+  <Book>
+    <Name>How To Draw</Name>
+    <Authors>Scott Robertson and Thomas Bertlling</Authors>
+    <Publisher>Design Studio Press</Publisher>
+    <Pages>272</Pages>
+  </Book>
+  <Book>
+    <Name>How To Draw</Name>
+    <Authors>Tony Lewin and Ryan Borroff</Authors>
+    <Publisher>Motorbooks</Publisher>
+    <Pages>208</Pages>
+  </Book>
+  <Book>
+    <Name>How To Draw</Name>
+    <Authors>Staurt Macey, Geoff Wardle and Ralph Gilles</Authors>
+    <Publisher>Design Studio Press</Publisher>
+    <Pages>224</Pages>
+  </Book>
+</Books>
