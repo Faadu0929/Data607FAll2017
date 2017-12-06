@@ -1,0 +1,89 @@
+---
+title: "Context"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+devtools::install_github("fkeck/subtools")
+```
+```{r}
+suppressMessages(suppressWarnings(library(dplyr)))
+suppressMessages(suppressWarnings(library(stringr)))
+suppressMessages(suppressWarnings(library(tm)))
+suppressMessages(suppressWarnings(library(wordcloud)))
+suppressMessages(suppressWarnings(library(tidyverse)))
+suppressMessages(suppressWarnings(library(SnowballC)))
+
+
+```
+
+##Acquiring Data
+
+```{r}
+##Getting Data
+
+## after scraping Indeed got data and saved into a csv file
+df_BigData <- read.csv(file.choose(), header = TRUE)
+attach(df_BigData)
+## matching words which are in the list to the dataframe.
+## got a new dataframe.
+Filter_Worddata <- df_BigData[ which(words %in% 'big data' | 
+                     words %in% 'aws' | 
+                     words %in% 'machine learning'|
+                     words %in% '.net'|
+                       words %in% 'java'|
+                       words %in% 'sqlserver'|
+                       words %in% 'hadoop'|
+                       words %in% 'datawarehouse'|
+                       words %in% 'python'|
+                       words %in% 'oracle'|
+                       words %in% 'sas'|
+                       words %in% 'r'|
+                       words %in% 'c/c++'|
+                       words %in% 'data science'|
+                       words %in% 'dynamodb'|
+                       words %in% 'sql server'|
+                       words %in% 'experimental design'|
+                       words %in% 'mysql'|
+                       words %in% 'agile'|
+                       words %in% 'data mining'|
+                       words %in% 'shell script'|
+                       words %in% 'enterprise software'|
+                       words %in% 'embedded software'),c('doc_id','job_title','state','words')]
+
+nrow(Filter_Worddata)
+
+
+
+```
+
+
+##Word Cloud
+
+```{r}
+##Now we will use data mining operation and build our wordCloud for better visulization of the data which we hav extrated and filtered from our big data repository.
+
+
+## word cloud for key words
+keyWord_Cloud <- Corpus(VectorSource(Filter_Worddata$words))
+keyWord_Cloud
+keyWord_Cloud <- keyWord_Cloud %>% tm_map(PlainTextDocument)
+keyWord_Cloud <- keyWord_Cloud %>% tm_map(str_replace_all, pattern = "[[:punct:]]", replacement = " ")
+keyWord_Cloud <- keyWord_Cloud %>% tm_map(tolower)
+
+
+## word cloud for key job titles
+
+jobTitle_Cloud <- Corpus(VectorSource(Filter_Worddata$job_title))
+jobTitle_Cloud
+jobTitle_Cloud <- jobTitle_Cloud %>% tm_map(PlainTextDocument)
+jobTitle_Cloud <- jobTitle_Cloud %>% tm_map(str_replace_all, pattern = "[[:punct:]]", replacement = " ")
+jobTitle_Cloud <- jobTitle_Cloud %>% tm_map(tolower)
+
+
+##Ploting the results
+
+wordcloud(keyWord_Cloud, max.words = 100, random.order = FALSE, random.color = TRUE,colors=c('orange', 'black'))
+wordcloud(jobTitle_Cloud, max.words = 100, random.order = FALSE, random.color = TRUE,colors=c('blue', 'green','red'))
+```
